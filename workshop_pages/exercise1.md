@@ -3,22 +3,32 @@
 ## Contents
 
 1. Overview
-2. Setup
-3. Analysis
+2. Preparation
+3. System Setup
+4. Analysis
+5. Clean Up
 
 ## Overview
 
 We will be using the ligand binding domain of the ionotropic glutamate receptor GluR2 bound to the agonist AMPA. As it would take about 6 hours to execute the simulation of this protein-ligand system, we are going to setup the calculations and then analyse the output a of job that has been previously executed. You can compare with the results from your own runs after the workshop.
 
-## Setup
+## Preparation
+
+Please start a session on the workshop server [here](https://workshop.biosimspace.org/hub/tmplogin). You will be presented with a Jupyter session containing a file browser. Make sure to keep this browser tab open as we'll be needing it throughout. For now, press the button marked "New" near the top right and select Terminal from the drop-down menu. A new tab will open containing a terminal emulator, we'll use this for the majority of the workshop. Use:
+
+> cd gcmc\_protoms\_workshop
+
+to change into the master directory for this workshop.
+
+## System Setup
 
 The master folder for this workshop contains input files for the system.
 
 The files necessary to set up this kind of simulation have been provided - a pdb file containing the protein structure, here protein.pdb, and a pdb file containing the ligand, here amq.pdb. We can generate all the necessary inputs for the ProtoMS simulation code through use of the python setup tools. A convenient interface is provided by the master script protoms.py. To setup a simulation of our protein-ligand system simply type:
 
-> python2.7 $PROTOMSHOME/protoms.py -s sampling -p protein.pdb -l amq.pdb --charge -1 -r 3
+> python2.7 $PROTOMSHOME/protoms.py -s sampling -p protein.pdb -l amq.pdb `--`charge -1 -r 3
 
-Hopefully, it should be straightforward to understand the interface. The -s flag is used to request the type of simulation, in this case, simply some vanilla MC sampling, -p gives the input protein structure to use and -l provides the ligand to include in the system. Additional small molecules can be included by providing them as additional arguments to -l. The --charge flag refers to the formal charge of the ligand and is required for setup. The last argument -r 3 requests input files to perform three independent simulations. This is a common approach to lower the statistical uncertainty of the computed quantities. Typically more independent simulations are executed until the uncertainty, estimated as the standard error, falls below an acceptable limit, e.g. 0.5 kcal.mol-1.
+Hopefully, it should be straightforward to understand the interface. The -s flag is used to request the type of simulation, in this case, simply some vanilla MC sampling, -p gives the input protein structure to use and -l provides the ligand to include in the system. Additional small molecules can be included by providing them as additional arguments to -l. The `--`charge flag refers to the formal charge of the ligand and is required for setup. The last argument -r 3 requests input files to perform three independent simulations. This is a common approach to lower the statistical uncertainty of the computed quantities. Typically more independent simulations are executed until the uncertainty, estimated as the standard error, falls below an acceptable limit, e.g. 0.5 kcal.mol-1.
 
 You'll notice that we provided very little information indeed to set up a complete simulation. There is of course a great deal going on under the hood and, using the above command, ProtoMS is making a lot of decisions on your behalf.  Fortunately, the majority of simulation set up options can be controlled from the command line. For a description of commonly used options (such as the -s and -l flags above) and their arguments you can type:
 
@@ -26,7 +36,7 @@ You'll notice that we provided very little information indeed to set up a comple
 
 Alternatively, for a full description of all available options you can type:
 
-> python2.7 $PROTOMSHOME/protoms.py --fullhelp
+> python2.7 $PROTOMSHOME/protoms.py `--`fullhelp
 
 Executing protoms.py as above has performed essentially three actions:
 
@@ -135,3 +145,11 @@ Equilibration points for the individual series are indicated by the vertical das
 By now you should be able to find the file with the plot. Based on this analysis we can consider about half of the simulation length to provide well equilibrated structures of the protein-ligand complex. Whilst we've chosen the ligand interaction energies, it is important to consider the energy components for the aspect of the simulation you are interested to gauge equilibration.
 
 Another factor that is important to consider for an MC simulation is the acceptance rate of attempted moves. In the output directory find the accept file. This contains entries for every residue in the system, recording the number of attempted and successful moves. There is an inherent tension in MC between attempted move size and the resulting acceptance rate for the simulation. If your move size is too large your acceptance rate will suffer, but if the move size is too small you will not sample efficiently and simulation convergence will be poorer. Attempted move sizes are directly related to the flexibility parameters provided in amq.tem and discussed above. Find the entry for the ligand AMQ. A good rule of thumb is that your acceptance rate should be in the range of around 20-50%. The acceptance rate for AMQ falls comfortably in this range so the default flexibilities in amq.tem from the setup are about right. This will not always be the case however so you should be prepared to modify the flexibility values as required.
+
+## Clean Up
+
+As the workshop server only has a limited amount of disk space please remove the decompressed workshop data from this exercise. This will help to ensure that performance of the server remains crisp for all users. Remove the folder out1_bnd with:
+
+> rm -r example\_outputs/out1\_bnd
+
+[Next exercise](exercise2.md)
