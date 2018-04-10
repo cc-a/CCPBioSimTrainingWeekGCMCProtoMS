@@ -20,7 +20,7 @@ We will continue to use our previous example of the ionotropic glutamate recepto
 
 This exercise uses the same input files as the previous one and can in fact be carried out from the same directory without interfering. As we're interested in the water molecules around the ligand, we'll use the ProtoMS python scripts to automatically construct a GCMC box around the ligand. 
 
-> python2.7 $PROTOMSHOME/protoms.py -p protein.pdb -l amq.pdb `--`charge -1 -s gcmc
+> python2.7 $PROTOMSHOME/protoms.py -p protein.pdb -l amq.pdb --charge -1 -s gcmc
 
 This is very similar to the setup line from the previous exercise except we've requested a gcmc simulation. If you are also working in the same directory as last time you'll notice that ProtoMS recognised that a amq.tem had already been created and did not bother to reparameterise the ligand. You'll also notice that in addition to the files for the sampling simulation we have three new files - gcmc\_box.pdb, gcmc\_wat.pdb and water\_clr.pdb. We also have run\_gcmc.cmd instead of run\_bnd.cmd. gcmc\_box.pdb is provided for convenience to visualise the volume where water molecules will be inserted and deleted, and gcmc\_wat.pdb contains the water molecules that are allowed to be inserted and deleted.
 
@@ -59,7 +59,7 @@ The B value which gives us the correct water occupancy for equilibrium with bulk
 
 We'll use protoms.py to set up our system again, but this time using the new box as an input. To save time, we'll re-use the protein scoop, water droplet, and ligand parameter files that were created the first time protoms.py was run.
 
-> python2.7 $PROTOMSHOME/protoms.py -s gcmc -l amq.pdb -w water.pdb -sc protein\_scoop.pdb `--`gcmcbox gcmc\_box.pdb `--`adams -6.9 
+> python2.7 $PROTOMSHOME/protoms.py -s gcmc -l amq.pdb -w water.pdb -sc protein\_scoop.pdb --gcmcbox gcmc\_box.pdb --adams -6.9 
 
 The file that will instruct ProtoMS how to perform Monte Carlo is called run_bnd.cmd. Open up this command file and have a look at the parameters that are specific to GCMC. You should see something like
 
@@ -98,7 +98,7 @@ First, let's have a look at how well equilibrated the number of inserted water m
 
 This will plot the number of inserted waters with simulation time, and estimate when the number has equilibrated. For our results, the simulation consistently shows 5 waters in the GCMC box. If the data is noisier there are other options too, such as a moving average. For instance, to average over a window of 50 frames, type
 
-> python2.7 $PROTOMSHOME/tools/calc_series.py -f results -s solventson `--`moving 50
+> python2.7 $PROTOMSHOME/tools/calc_series.py -f results -s solventson --moving 50
 
 Using either calc\_clusters.py or calc\_density.py, we can have a look at the hydration structure predicted by GCMC. 
 
@@ -124,9 +124,9 @@ Understanding the binding free energy of water molecules and networks can be use
 > cp protein\_scoop.pdb amq.pdb amq.tem gcmc\_box.pdb gcmc\_wat.pdb water\_clr.pdb bindingFE
 > cd bindingFE
 
-The simulation file can be set up using the command below. The command is similar to that used in the previous section, however now we are using the `--`adamsrange flag instead of the `--`adams one. This means that B values will be simulated between -27.9 and -4.9. It is important that the range of B values covers the calculated Bequil. The 16 indicates that we are simulating 16 B values equally spaced between the range. 16 has been chosen as it is the number of processors per node that are available on our computing resource, however this can easily be changed to suit your environment.
+The simulation file can be set up using the command below. The command is similar to that used in the previous section, however now we are using the --adamsrange flag instead of the --adams one. This means that B values will be simulated between -27.9 and -4.9. It is important that the range of B values covers the calculated Bequil. The 16 indicates that we are simulating 16 B values equally spaced between the range. 16 has been chosen as it is the number of processors per node that are available on our computing resource, however this can easily be changed to suit your environment.
 
-> python2.7 $PROTOMSHOME/protoms.py -s gcmc -l amq.pdb -w water.pdb -sc protein\_scoop.pdb `--`gcmcbox gcmc\_box.pdb `--`adamsrange -27.9 -4.9 16 
+> python2.7 $PROTOMSHOME/protoms.py -s gcmc -l amq.pdb -w water.pdb -sc protein\_scoop.pdb --gcmcbox gcmc\_box.pdb --adamsrange -27.9 -4.9 16 
 
 Check what new files have been created. Before we were using the Bequil value to look at the equilibrium water network, however to calculate the binding free energies of the water molecules, we need to compare this to the same system with no waters in. Simulating at lower B value will steadily reduce the number of waters in the system. As we are now simulating 16 B values, we will need 16 processors, which can be run using:
 
@@ -150,17 +150,17 @@ You can plot the average number of waters across all B values using:
 
 > python2.7 $PROTOMSHOME/tools/calc\_gci.py -d out\_gcmc\_titration/b\_-* -p titration
 
-The `--`s XXX flag can also be used, where XXX should be replaced with the number of snapshots after which the system looks equilibrated. Based on the solvation plot above, we will skip the first 200 snapshots, using -s 200. 
+The --s XXX flag can also be used, where XXX should be replaced with the number of snapshots after which the system looks equilibrated. Based on the solvation plot above, we will skip the first 200 snapshots, using -s 200. 
 
 Download and visualise Titration.png that was created by the script. This shows the number of water molecules increasing in a number of 'steps', up to 5 waters. To calculate the binding free energies of these waters, we need to calculate the area under the titration curve. The script calc_gci.py can fit a curve by modelling the titration data as a sum of logistic functions, which is equivalent to a very simple type of artificial neural network (ANN). As the titration data shows what looks like 5 steps, we can input that into the model. Your results may need fewer steps depending on the shape of your results. To calculate the fit with 5 steps and plot it, type
 
-> python2.7 $PROTOMSHOME/tools/calc\_gci.py -d out\_gcmc\_titration/b\_-* -p fit -c fit `--`steps 5
+> python2.7 $PROTOMSHOME/tools/calc\_gci.py -d out\_gcmc\_titration/b\_-* -p fit -c fit --steps 5
 
-Again, the `--`skip XXX flag can be used. Titration.png will have been updated with the fitted curve. The line of best fit is shown in red. The fit correctly captures the shape of the titration data, and looks to be a good fit to all the data points. To calculate the binding free energies of adding water to the cavity, type
+Again, the --skip XXX flag can be used. Titration.png will have been updated with the fitted curve. The line of best fit is shown in red. The fit correctly captures the shape of the titration data, and looks to be a good fit to all the data points. To calculate the binding free energies of adding water to the cavity, type
 
-> python2.7 $PROTOMSHOME/tools/calc\_gci.py -d out\_gcmc\_titration/b\_-* -c pmf `--`steps 4 -v 1068.81
+> python2.7 $PROTOMSHOME/tools/calc\_gci.py -d out\_gcmc\_titration/b\_-* -c pmf --steps 4 -v 1068.81
 
-Again, the `--`skip flag can be used. The -v flag is the volume of the GCMC region given by the make\_gcmcbox.py script used in the previous section. This can also be calculated by looking at the gcmc\_box.pdb file and determining the volume from the length of the x, y and z dimension. 
+Again, the --skip flag can be used. The -v flag is the volume of the GCMC region given by the make\_gcmcbox.py script used in the previous section. This can also be calculated by looking at the gcmc\_box.pdb file and determining the volume from the length of the x, y and z dimension. 
 
 This will output a table that shows the free energy (in kcal/mol) to transfer water from ideal gas (IDEAL GAS TRANSFER FREE ENERGIES) and from bulk water (BINDING FREE ENERGIES) to the GCMC box. The script calc_gci.py actually fits the ANN several times from different initial parameter values. The free energies are calculated for each fit, and from the ensemble of the calculated free energies the mean, standard deviation (Std. dev), and the 25th, 50th (Median), and 75th percentiles are calculated. When the titration data is particularly noisy, the median free energy is a more robust measure of the average free energy than the mean. The table indicates that the free energy to bind 5 waters from bulk water is -27.78 kcal/mol. The energy to bind 4 waters or 5 waters is very similar, which suggests that both water occupancies are reasonable. This may indicate that the 5th water molecule in the site is a partially-occupied site.
 

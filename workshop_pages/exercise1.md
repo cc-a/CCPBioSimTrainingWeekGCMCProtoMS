@@ -26,9 +26,9 @@ The master folder for this workshop contains input files for the system.
 
 The files necessary to set up this kind of simulation have been provided - a pdb file containing the protein structure, here protein.pdb, and a pdb file containing the ligand, here amq.pdb. We can generate all the necessary inputs for the ProtoMS simulation code through use of the python setup tools. A convenient interface is provided by the master script protoms.py. To setup a simulation of our protein-ligand system simply type:
 
-> python2.7 $PROTOMSHOME/protoms.py -s sampling -p protein.pdb -l amq.pdb `--`charge -1 -r 3
+> python2.7 $PROTOMSHOME/protoms.py -s sampling -p protein.pdb -l amq.pdb --charge -1 -r 3
 
-Hopefully, it should be straightforward to understand the interface. The -s flag is used to request the type of simulation, in this case, simply some vanilla MC sampling, -p gives the input protein structure to use and -l provides the ligand to include in the system. Additional small molecules can be included by providing them as additional arguments to -l. The `--`charge flag refers to the formal charge of the ligand and is required for setup. The last argument -r 3 requests input files to perform three independent simulations. This is a common approach to lower the statistical uncertainty of the computed quantities. Typically more independent simulations are executed until the uncertainty, estimated as the standard error, falls below an acceptable limit, e.g. 0.5 kcal.mol-1.
+Hopefully, it should be straightforward to understand the interface. The -s flag is used to request the type of simulation, in this case, simply some vanilla MC sampling, -p gives the input protein structure to use and -l provides the ligand to include in the system. Additional small molecules can be included by providing them as additional arguments to -l. The --charge flag refers to the formal charge of the ligand and is required for setup. The last argument -r 3 requests input files to perform three independent simulations. This is a common approach to lower the statistical uncertainty of the computed quantities. Typically more independent simulations are executed until the uncertainty, estimated as the standard error, falls below an acceptable limit, e.g. 0.5 kcal.mol-1.
 
 You'll notice that we provided very little information indeed to set up a complete simulation. There is of course a great deal going on under the hood and, using the above command, ProtoMS is making a lot of decisions on your behalf.  Fortunately, the majority of simulation set up options can be controlled from the command line. For a description of commonly used options (such as the -s and -l flags above) and their arguments you can type:
 
@@ -36,7 +36,7 @@ You'll notice that we provided very little information indeed to set up a comple
 
 Alternatively, for a full description of all available options you can type:
 
-> python2.7 $PROTOMSHOME/protoms.py `--`fullhelp
+> python2.7 $PROTOMSHOME/protoms.py --fullhelp
 
 Executing protoms.py as above has performed essentially three actions:
 
