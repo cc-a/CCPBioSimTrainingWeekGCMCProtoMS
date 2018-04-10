@@ -166,14 +166,14 @@ This will output a table that shows the free energy (in kcal/mol) to transfer wa
 
 We expect the minimum energy network of this simulation to match our original water placement simulation, where we predicted 5 water molecules in the GCMC region. The energy calculation also shows the energy is minimised with 5 waters present. The system at Bequil from this titration simulation can also be used to calculate the expected number of waters:
 
-> B EQUILIBRIUM CONDITION FROM FITTED MODELS:
-> Bequil: -6.9
-> Number of molecules:  Mean   Std. dev   25th Percentile    50th Percentile   75th Percentile
->                       5.1      0.0            5.1              5.1                5.1
-> B EQUILIBRIUM CONDITION FROM SIMULATED B VALUE:
-> Bequil: -6.9
-> Similar simulated B values: [-6.433]
-> Average N* at simululated at B values: [-6.433] is 5.1
+> B EQUILIBRIUM CONDITION FROM FITTED MODELS:  
+> Bequil: -6.9  
+> Number of molecules:  Mean   Std. dev   25th Percentile    50th Percentile   75th Percentile  
+>                       5.1      0.0            5.1              5.1                5.1  
+> B EQUILIBRIUM CONDITION FROM SIMULATED B VALUE:  
+> Bequil: -6.9  
+> Similar simulated B values: [-6.433]  
+> Average N* at simululated at B values: [-6.433] is 5.1  
 
 The first shows the average N from the fitted curve, while the second shows the calculated average N from the nearest simulated B value, which was B = -6.433. Both are shown, as the first is dependent on the quality of the fit. For both, the average water occupancy is 5.1, which is close to the value of 5 waters found in the previous section. This non-integer result may be a result of the fitting function, or that B=-6.433 is slightly higher than Bequil. This again shows that 5 waters are predicted, and can be useful if only a titration simulation has been performed.
 
