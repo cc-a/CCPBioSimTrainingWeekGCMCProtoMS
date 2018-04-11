@@ -126,10 +126,10 @@ Examining the plot total_bnd.png we see that the total energy of system takes a 
 
 Unlike before we have not specified the -s flag to indicate which series to plot. In this case, calc_series.py will list all available series that you can plot and analyse. What we are interested in here is the total energy and the various interaction energies, so when prompted type:
 
-> total
-> inter/solvent-solvent/sum
-> inter/amq-solvent/sum
-> inter/protein1-amq1/sum
+> total  
+> inter/solvent-solvent/sum  
+> inter/amq-solvent/sum  
+> inter/protein1-amq1/sum  
 > inter/protein1-solvent/sum
 
 where amq is the residue name of the ligand. The program will now estimate the equilibration time for all of the series and plot them. You will be prompted for how you want to plot the multiple series, choose "single plot + subtract last snapshot" by simply typing:

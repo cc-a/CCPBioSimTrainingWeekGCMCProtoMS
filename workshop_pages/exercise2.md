@@ -24,7 +24,7 @@ This exercise uses the same input files as the previous one and can in fact be c
 
 This is very similar to the setup line from the previous exercise except we've requested a gcmc simulation. If you are also working in the same directory as last time you'll notice that ProtoMS recognised that a amq.tem had already been created and did not bother to reparameterise the ligand. You'll also notice that in addition to the files for the sampling simulation we have three new files - gcmc\_box.pdb, gcmc\_wat.pdb and water\_clr.pdb. We also have run\_gcmc.cmd instead of run\_bnd.cmd. gcmc\_box.pdb is provided for convenience to visualise the volume where water molecules will be inserted and deleted, and gcmc\_wat.pdb contains the water molecules that are allowed to be inserted and deleted.
 
-The gcmc box has been automatically created so that its edges are no less than 2 Angstroms away from the ligand. However, it's really important we get the box right, so let's check to see if it looks okay. Visualise the protein-ligand complex along with the gcmc region. This is not supported by viewMolecules in a Jupyter notebook so you'll need to copy the relevant files to your local machine and view them their, for instance with pymol:
+The gcmc box has been automatically created so that its edges are no less than 2 Angstroms away from the ligand. However, it's really important we get the box right, so let's check to see if it looks okay. Visualise the protein-ligand complex along with the gcmc region. This is not supported by viewMolecules in a Jupyter notebook so you'll need to copy the relevant files to your local machine and view them there, for instance with pymol:
 
 > pymol protein\_scoop.pdb amq.pdb water\_clr.pdb gcmc\_box.pdb
 
@@ -90,19 +90,23 @@ Either run it on your local machine (e.g. if you have multiple cores), or have a
 
 ## Analysis
 
-The simulation results are contained in directory out\_gcmc. If you haven't had time to run the GCMC simulation, an example "out\_gcmc" folder can be downloaded here. You can visualise all.pdb from the output directory to see waters inserting and deleting in the gcmc region. If your choice of molecular viewer doesn't get on with trajectories with variable numbers of atoms then try using make\_gcmc\_traj.py in the $PROTOMSHOME/tools folder.
+This above command will have created the directory out\_gcmc1. As before, an example output from a completed simulation run can be found in the example\_outputs folder. You can extract out\_gcmc1 from the archive with the command:
 
-First, let's have a look at how well equilibrated the number of inserted water molecules is. We'll use calc_series.py, which has an interactive interface. To use it in such a manner, type 
+> tar xf out_gcmc1.tar.gz
 
-> python2.7 $PROTOMSHOME/tools/calc_series.py -f results -s solventson
+You can visualise all.pdb from the output directory to see waters inserting and deleting in the gcmc region. If your choice of molecular viewer (e.g. vmd) doesn't get on with trajectories with variable numbers of atoms then try using make\_gcmc\_traj.py in the $PROTOMSHOME/tools folder.
+
+First, let's have a look at how well equilibrated the number of inserted water molecules is. We'll use calc\_series.py, which has an interactive interface. To use it in such a manner, type 
+
+> python2.7 $PROTOMSHOME/tools/calc_series.py -f out\_gcmc1/results -s solventson
 
 This will plot the number of inserted waters with simulation time, and estimate when the number has equilibrated. For our results, the simulation consistently shows 5 waters in the GCMC box. If the data is noisier there are other options too, such as a moving average. For instance, to average over a window of 50 frames, type
 
-> python2.7 $PROTOMSHOME/tools/calc_series.py -f results -s solventson --moving 50
+> python2.7 $PROTOMSHOME/tools/calc_series.py -f out\_gcmc1/results -s solventson --moving 50
 
 Using either calc\_clusters.py or calc\_density.py, we can have a look at the hydration structure predicted by GCMC. 
 
-> python2.7 $PROTOMSHOME/tools/calc_clusters.py -f all.pdb -m WA1 -o watclusts.pdb
+> python2.7 $PROTOMSHOME/tools/calc_clusters.py -f out\_gcmc1/all.pdb -m WA1 -o watclusts.pdb
 
 Visualise the system along with watclusts.pdb. You should end up with positions like this: 
 
