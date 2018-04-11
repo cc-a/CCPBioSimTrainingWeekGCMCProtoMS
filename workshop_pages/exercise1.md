@@ -14,7 +14,7 @@ We will be using the ligand binding domain of the ionotropic glutamate receptor 
 
 ## Preparation
 
-Please start a session on the workshop server [here](https://workshop.biosimspace.org/hub/tmplogin). You will be presented with a Jupyter session containing a file browser. Make sure to keep this browser tab open as we'll be needing it throughout. For now, press the button marked "New" near the top right and select Terminal from the drop-down menu. A new tab will open containing a terminal emulator, we'll use this for the majority of the workshop. Use:
+Please start a session on the workshop server <a href="https://workshop.biosimspace.org/hub/tmplogin" target="_blank">here</a>. You will be presented with a Jupyter session containing a file browser. Make sure to keep this browser tab open as we'll be needing it throughout. For now, press the button marked "New" near the top right and select Terminal from the drop-down menu. A new tab will open containing a terminal emulator, we'll use this for the majority of the workshop. Use:
 
 > cd gcmc\_protoms\_workshop
 
