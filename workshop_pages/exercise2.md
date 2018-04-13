@@ -61,7 +61,7 @@ We'll use protoms.py to set up our system again, but this time using the new box
 
 > python2.7 $PROTOMSHOME/protoms.py -s gcmc -l amq.pdb -w water.pdb -sc protein\_scoop.pdb --gcmcbox gcmc\_box.pdb --adams -6.9 
 
-The file that will instruct ProtoMS how to perform Monte Carlo is called run_bnd.cmd. Open up this command file and have a look at the parameters that are specific to GCMC. You should see something like
+The file that will instruct ProtoMS how to perform Monte Carlo is called run\_gcmc.cmd. Open up this command file and have a look at the parameters that are specific to GCMC. You should see something like
 
 > gcmc 0  
 > parfile $PROTOMSHOME/data/gcmc\_tip4p.tem  
